@@ -4,17 +4,17 @@ import math
 import numpy as np
 
 
-def qstar(x):
+def g(x):
 	return math.sin(x)
 
 
-def qsample():
+def gsample():
 	# x = Finver(y), where F = int(sin(x)/2, x, 0, x)
 	y = random.uniform(0, 1)
 	return math.pi - math.acos(2 * y - 1)
 
 
-def pstar(x):
+def f(x):
 	return math.fabs(math.sin(x * x / 2)) * x * (math.pi - x) / 2
 
 
@@ -27,10 +27,10 @@ Ry = []
 T = 200
 for i in range(T):
 	while True:
-		x = qsample()
+		x = gsample()
 		u = random.uniform(0, 1)
-		y = gamma * qstar(x) * u
-		if y <= pstar(x):
+		y = gamma * g(x) * u
+		if y <= f(x):
 			Ay.append(y)
 			break
 		else:
@@ -39,16 +39,18 @@ for i in range(T):
 	S.append(x)
 
 X = np.linspace(0, math.pi, 100)
-pp = [pstar(x) for x in X]
+pp = [f(x) for x in X]
 plt.figure()
 plt.hist(S, bins=20, density=True, fill=False, color='k')
-plt.plot(X, pp, '-k')
+plt.plot(X, pp, '-k', label="f(x)")
+plt.legend()
 plt.savefig("hist.svg")
 
-gq = [gamma * qstar(x) for x in X]
+gq = [gamma * g(x) for x in X]
 plt.figure()
-plt.plot(X, pp, '-k')
-plt.plot(X, gq, '--k')
-plt.plot(Rx, Ry, 'xk')
-plt.plot(S, Ay, 'ok', fillstyle='none')
+plt.plot(X, gq, '--k', label="g(x)")
+plt.plot(X, pp, '-k', label="f(x)")
+plt.plot(Rx, Ry, 'xk', label="rejected")
+plt.plot(S, Ay, 'ok', fillstyle='none', label="accepted")
+plt.legend()
 plt.savefig("reject.svg")
