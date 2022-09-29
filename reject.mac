@@ -1,0 +1,6 @@
+f: sin(x);
+I: integrate(f, x, 0, %pi);
+p: f/I;
+assume(x > 0);
+F: integrate(p, x, 0, x);
+grind(solve(y = F, x)[1]);
