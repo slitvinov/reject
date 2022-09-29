@@ -19,7 +19,7 @@ def f(x):
 
 
 random.seed(123)
-gamma = 2
+M = 2
 S = []
 Ay = []
 Rx = []
@@ -29,7 +29,7 @@ for i in range(T):
 	while True:
 		x = gsample()
 		u = random.uniform(0, 1)
-		y = gamma * g(x) * u
+		y = M * g(x) * u
 		if y <= f(x):
 			Ay.append(y)
 			break
@@ -46,7 +46,7 @@ plt.plot(X, pp, '-k', label="f(x)")
 plt.legend()
 plt.savefig("hist.svg")
 
-gq = [gamma * g(x) for x in X]
+gq = [M * g(x) for x in X]
 plt.figure()
 plt.plot(X, gq, '--k', label="g(x)")
 plt.plot(X, pp, '-k', label="f(x)")
